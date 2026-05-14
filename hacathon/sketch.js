@@ -1,9 +1,14 @@
 let mapImg;
 let tigerWalk = 0;
 let tigerSceneMove = -150; 
+let riverSound;
+let birdX = -100;
 let baseW = 900;
 let baseH = 600;
 let dropSound;
+let waterfallSound;
+let menuMusic;
+let musicStarted = false;
 let currentScreen = "menu";
 
 // Boat scene variables
@@ -13,6 +18,9 @@ let waveOffset = 0;
 
 function preload() {
   dropSound = loadSound("water.mp3");
+  riverSound = loadSound("river.mp3");
+  waterfallSound = loadSound("waterfall.mp3");
+  menuMusic = loadSound("song.mp3");
   mapImg = loadImage(
     "map.jpg",
     () => console.log("image loaded"),
@@ -22,9 +30,40 @@ function preload() {
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
+ 
+menuMusic.setVolume(0.5);
 }
 
 function draw() {
+  if (currentScreen === "boat") {
+  if (!riverSound.isPlaying()) {
+    riverSound.loop();
+    riverSound.setVolume(0.3);
+  }
+} else {
+  if (riverSound.isPlaying()) {
+    riverSound.stop();
+  }
+}
+  if (currentScreen === "bhedaghat") {
+  if (!waterfallSound.isPlaying()) {
+    waterfallSound.loop();
+    waterfallSound.setVolume(0.4);
+  }
+} else {
+  if (waterfallSound.isPlaying()) {
+    waterfallSound.stop();
+  }
+}
+  if (currentScreen === "menu") {
+  if (!menuMusic.isPlaying()) {
+    menuMusic.loop();
+  }
+} else {
+  if (menuMusic.isPlaying()) {
+    menuMusic.stop();
+  }
+}
   if (currentScreen === "menu") {
     drawMenu();
   } else if (currentScreen === "shivling") {
@@ -75,6 +114,7 @@ function drawShivlingPage() {
   scale(s * 1.2);
   translate(-400, -300);
 
+  
   drawDeepBackgroundWalls();
   drawMidgroundCaveWalls();
   drawCeilingRock();
@@ -83,6 +123,26 @@ function drawShivlingPage() {
   drawShivlinga();
   manageRipples();
   drawHeavyForegroundCaveCorners();
+
+    push();
+
+resetMatrix();
+
+fill(255);
+
+textAlign(CENTER, TOP);
+
+textStyle(BOLD);
+
+textSize(min(windowWidth, windowHeight) * 0.04);
+
+stroke(0);
+
+strokeWeight(5);
+
+text("Jatashankar Mahadev", windowWidth / 2, 20);
+
+pop();
   pop();
 
   fill(255);
@@ -273,6 +333,7 @@ function drawTrishula() {
   triangle(-14, -62, 14, -62, 0, -50);
   triangle(-14, -38, 14, -38, 0, -50);
   pop();
+  
 }
 
 function manageDroplets() {
@@ -376,7 +437,16 @@ function drawTigerPage() {
   rect(0, 350, baseW, 250);
 
   stroke(70, 130, 60, 90);
-  for (let i = 0; i < 500; i += 8) line(i, 360, i + random(-4, 4), 350 + random(10));
+  stroke(70, 130, 60, 90);
+
+for (let i = 0; i < 900; i += 8) {
+
+  let sway = sin(frameCount * 0.05 + i) * 4;
+
+  line(i, 360, i + sway, 350 + random(10));
+}
+
+noStroke();
   noStroke();
 
   fill(210, 185, 140);
@@ -462,13 +532,19 @@ function drawTigerPage() {
 }
 
 function drawTree(x, y) {
+
+  let sway = sin(frameCount * 0.03 + x) * 5;
+
   fill(100, 60, 20);
   rect(x, y, 30, 100);
+
   fill(30, 150, 50);
-  ellipse(x + 15, y - 20, 100);
+  ellipse(x + 15 + sway, y - 20, 100);
+
   fill(40, 170, 60, 180);
-  ellipse(x - 10, y + 5, 70);
-  ellipse(x + 35, y + 5, 70);
+  ellipse(x - 10 + sway, y + 5, 70);
+
+  ellipse(x + 35 + sway, y + 5, 70);
 }
 
 // ================= JUNGLE SCENE =================
@@ -1066,6 +1142,7 @@ function drawBoatScene() {
 }
 
 // ================= KEYBOARD CONTROLS =================
+
 function keyPressed() {
   if (currentScreen === "menu") {
     if (key === "s" || key === "S") currentScreen = "shivling";
@@ -1078,4 +1155,14 @@ function keyPressed() {
   }
 
   if (key === "b" || key === "B") currentScreen = "menu";
+}
+
+// mouse pressed 
+function mouseMoved() {
+  if (!musicStarted) {
+    userStartAudio();
+    menuMusic.loop();
+    menuMusic.setVolume(0.5);
+    musicStarted = true;
+  }
 }
