@@ -7,6 +7,10 @@ let baseW = 900;
 let baseH = 600;
 let dropSound;
 let waterfallSound;
+let tigerRoared = false;
+let roarTimer = 0
+let jungleSound;;
+let gateBirdSound;
 let menuMusic;
 let musicStarted = false;
 let currentScreen = "menu";
@@ -17,8 +21,12 @@ let boatY = 415;
 let waveOffset = 0;
 
 function preload() {
+  
   dropSound = loadSound("water.mp3");
+  jungleSound = loadSound("jungle.mp3");
+  
   riverSound = loadSound("river.mp3");
+  gateBirdSound = loadSound("bird gate.mp3");
   waterfallSound = loadSound("waterfall.mp3");
   menuMusic = loadSound("song.mp3");
   mapImg = loadImage(
@@ -35,6 +43,34 @@ menuMusic.setVolume(0.5);
 }
 
 function draw() {
+  if (currentScreen === "tiger") {
+
+  if (!gateBirdSound.isPlaying()) {
+    gateBirdSound.loop();
+    gateBirdSound.setVolume(0.4);
+  }
+
+} else {
+
+  if (gateBirdSound.isPlaying()) {
+    gateBirdSound.stop();
+  }
+
+}
+  if (currentScreen === "jungle") {
+
+  if (!jungleSound.isPlaying()) {
+    jungleSound.loop();
+    jungleSound.setVolume(0.4);
+  }
+
+} else {
+
+  if (jungleSound.isPlaying()) {
+    jungleSound.stop();
+  }
+
+}
   if (currentScreen === "boat") {
   if (!riverSound.isPlaying()) {
     riverSound.loop();
