@@ -428,6 +428,15 @@ function drawTigerPage() {
   fill(255, 210, 80);
   ellipse(760, 90, 80);
 
+  birdX += 2;
+
+if (birdX > 1000) {
+  birdX = -100;
+}
+
+drawBird(birdX, 120);
+drawBird(birdX + 80, 150);
+
   fill(110, 150, 120);
   beginShape();
   vertex(0, 250); vertex(120, 120); vertex(260, 220); vertex(420, 130); vertex(600, 240); vertex(760, 150); vertex(900, 250); vertex(900, 350); vertex(0, 350);
@@ -545,6 +554,17 @@ function drawTree(x, y) {
   ellipse(x - 10 + sway, y + 5, 70);
 
   ellipse(x + 35 + sway, y + 5, 70);
+}
+
+function drawBird(x, y) {
+  stroke(40);
+  strokeWeight(2);
+  noFill();
+
+  arc(x, y, 20, 10, PI, TWO_PI);
+  arc(x + 20, y, 20, 10, PI, TWO_PI);
+
+  noStroke();
 }
 
 // ================= JUNGLE SCENE =================
