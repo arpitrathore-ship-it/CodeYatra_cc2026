@@ -88,6 +88,18 @@ function windowResized() {
 function drawMenu() {
   background(0);
   image(mapImg, 0, 0, width, height);
+
+  // TITLE
+textAlign(CENTER);
+textSize(60);
+
+fill(0);
+stroke(255);
+strokeWeight(4);
+
+text("MP TOURISM", width / 2, 90);
+
+noStroke();
   
   fill(0, 0, 0, 160);
   rectMode(CENTER);
